@@ -236,21 +236,21 @@ static int registerMethods(JNIEnv* env) {
 
   	if(!method_nativeCallBackFunc) {
   		LOGI("[%s]: failed to get method ID", __FUNCTION__);
-  		return 0;
+  		return -1;
   	}
 
   	method_nativeCallBackFuncArg1 = env->GetMethodID(clazz, "nativeCallBackFuncArg1", "(I)V");
 
   	if(!method_nativeCallBackFuncArg1) {
   		LOGI("[%s]: failed to get method ID", __FUNCTION__);
-  	  	return 0;
+  	  	return -1;
   	}
 
   	method_nativeCallBackFuncArg2 = env->GetMethodID(clazz, "nativeCallBackFuncArg2", "([B)V");
 
   	if(!method_nativeCallBackFuncArg2) {
   		LOGI("[%s]: failed to get method ID", __FUNCTION__);
-  	  	return 0;
+  	  	return -1;
   	}
 
     context->setJNIEnv(*env);
