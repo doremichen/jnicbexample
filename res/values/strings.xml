@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, JNIDemoActivity!</string>
+    <string name="app_name">JNIDemo</string>
+    <string name="str_btn_cbfunc">CallBackFun</string>
+    <string name="str_btn_jni">JNI function test</string>
+    <string name="str_btn_exit">Exit</string>
+
+</resources>

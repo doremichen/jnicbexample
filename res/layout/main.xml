@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/hello" />
+
+    <Button
+        android:id="@+id/callback_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onCallBack"
+        android:text="@string/str_btn_cbfunc" />
+
+    <Button
+        android:id="@+id/test_jni_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onJNITest"
+        android:text="@string/str_btn_jni" />
+    <Button
+        android:id="@+id/exit_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:onClick="onExit" 
+        android:text="@string/str_btn_exit"/>
+
+</LinearLayout>
