@@ -11,9 +11,12 @@ class JNIServer {
 
 	private static final String TAG = "JNIServer";
 	
-	private static Context jni_svr;
-	
+	private static Context jni_svr;	
 	private static NotifyInterface mNCB =  null;
+
+	/* Begin native fields: All of these fields are set by native code. */
+	public static int mData1FromNative;	
+	/* End native fields. */
 	
 	public JNIServer(Context context) {
 		// TODO Auto-generated constructor stub
@@ -38,6 +41,11 @@ class JNIServer {
 		_getJNICallbackfunc();
 	}
 	
+	public void changeJavaDataFromJNI(){
+        DemoUtil.DEBUGI(TAG, "+++ changeJavaDataFromJNI +++");
+        _changeJavaDataFromJNI();
+    }
+	
 	
 	public void Exit(){
 	    DemoUtil.DEBUGI(TAG, "+++ Exit +++");
@@ -49,8 +57,15 @@ class JNIServer {
 		mNCB = cb;		
 	}
 	
+	public int getDataFromJNI() {
+	    DemoUtil.DEBUGI(TAG, "getDataFromJNI.....");
+	    DemoUtil.DEBUGI(TAG, "mData1FromNative = " + mData1FromNative);
+	    return mData1FromNative;
+	}
 	
-	public void nativeCallBackFunc() {
+	
+	/* Begin native method: All of these fields are set by native code. */
+	private void nativeCallBackFunc() {
 	    DemoUtil.DEBUGI(TAG, "nativeCallBackFunc.....");
 
 		if(mNCB != null){
@@ -62,18 +77,18 @@ class JNIServer {
 	}
 	
 	
-	public void nativeCallBackFuncArg1(int num) {
+	private void nativeCallBackFuncArg1(int num) {
 	    DemoUtil.DEBUGI(TAG, "nativeCallBackFuncArg1.....");
 	    DemoUtil.DEBUGI(TAG, "num = " + num);	    
 	}
 	
-	public void nativeCallBackFuncArg2(byte[] arr) {
+	private void nativeCallBackFuncArg2(byte[] arr) {
 	    DemoUtil.DEBUGI(TAG, "nativeCallBackFuncArg2...");
         for (byte a : arr) {
             DemoUtil.DEBUGI(TAG, Byte.toString(a));
         }
 	}
-	
+	/* End native method. */
 	
 	public interface NotifyInterface {
 		
@@ -83,6 +98,7 @@ class JNIServer {
 	
 	private static final native String _getJNIString();   //call jni function return string.	
 	private static final native void _getJNICallbackfunc();   //Call Back Test 
+	private static final native void _changeJavaDataFromJNI(); //change java data from JNI
 	private static final native void _Exit();
 	
 }

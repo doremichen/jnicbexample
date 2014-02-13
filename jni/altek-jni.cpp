@@ -32,6 +32,14 @@ JNIEnv *gJNIenv;
 //Java full name qualifier
 static const char* const kClassName = "com/altek/app/JNIServer";
 
+//Field Id
+struct FieldIds {
+    // members
+    jfieldID mId1;
+};
+
+static FieldIds gFieldIds;
+
 //Method Id
 static jmethodID	method_nativeCallBackFunc;
 static jmethodID    method_nativeCallBackFuncArg1;
@@ -111,6 +119,16 @@ public:
 		atkCtx_env->CallVoidMethod(jobj, method_nativeCallBackFuncArg2, array);
 		LOGI("[%s] exit\n", __FUNCTION__);
 	}
+
+	void changeJavaData1()
+	{
+		LOGI("[%s] enter\n", __FUNCTION__);
+		jint data = atkCtx_env->GetStaticIntField(atkCtx_clazz, gFieldIds.mId1);
+		LOGI("[%s]: data[%d]\n", __FUNCTION__, data);
+		data = data + 122;
+		atkCtx_env->SetStaticIntField(atkCtx_clazz, gFieldIds.mId1, data);
+		LOGI("[%s] exit\n", __FUNCTION__);
+	}
 private:
 	ALTEKJNIContext():atkCtx_env(NULL),atkCtx_clazz(0){};
 
@@ -178,12 +196,20 @@ static void getJNICallBackfunc(JNIEnv *env, jobject clazz)
 #ifdef __TEST__
 	notify();
 #else
-//	context->notify();
+	context->notify();
 //	context->notify(100);
-	context->notifyWithByteArray();
+//	context->notifyWithByteArray();
 #endif
     LOGI("[%s] exit\n", __FUNCTION__);
 }
+
+static void changeJavaDataFromJNI(JNIEnv *env, jobject clazz)
+{
+	LOGI("[%s] enter\n", __FUNCTION__);
+	ALTEKJNIContext* context =  ALTEKJNIContext::getALTEKJNIContext();
+	context->changeJavaData1();
+}
+
 
 static void finish(JNIEnv *env, jobject clazz)
 {
@@ -205,6 +231,7 @@ static void finish(JNIEnv *env, jobject clazz)
 static const JNINativeMethod gMethods[] = {
     {"_getJNIString", "()Ljava/lang/String;", (void*)getJNIString},
     {"_getJNICallbackfunc", "()V", (void*)getJNICallBackfunc},
+    {"_changeJavaDataFromJNI", "()V", (void*)changeJavaDataFromJNI},
     {"_Exit", "()V", (void*)finish},
 };
 
@@ -232,29 +259,37 @@ static int registerMethods(JNIEnv* env) {
 #ifdef __TEST__
     gJNIenv = env;
 #else
+
+    //get field id object
+    gFieldIds.mId1 = env->GetStaticFieldID(clazz, "mData1FromNative", "I");   //integer data
+
+    //get method id object
     method_nativeCallBackFunc = env->GetMethodID(clazz, "nativeCallBackFunc", "()V");
 
   	if(!method_nativeCallBackFunc) {
-  		LOGI("[%s]: failed to get method ID", __FUNCTION__);
+  		LOGE("[%s]: failed to get method ID", __FUNCTION__);
   		return -1;
   	}
 
   	method_nativeCallBackFuncArg1 = env->GetMethodID(clazz, "nativeCallBackFuncArg1", "(I)V");
 
   	if(!method_nativeCallBackFuncArg1) {
-  		LOGI("[%s]: failed to get method ID", __FUNCTION__);
+  		LOGE("[%s]: failed to get method ID", __FUNCTION__);
   	  	return -1;
   	}
 
   	method_nativeCallBackFuncArg2 = env->GetMethodID(clazz, "nativeCallBackFuncArg2", "([B)V");
 
   	if(!method_nativeCallBackFuncArg2) {
-  		LOGI("[%s]: failed to get method ID", __FUNCTION__);
+  		LOGE("[%s]: failed to get method ID", __FUNCTION__);
   	  	return -1;
   	}
 
     context->setJNIEnv(*env);
     context->setclass(clazz);
+
+
+
 #endif
     /* fill out the rest of the ID cache */
     return 0;

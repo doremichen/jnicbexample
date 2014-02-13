@@ -6,5 +6,6 @@
     <string name="str_btn_cbfunc">CallBackFun</string>
     <string name="str_btn_jni">JNI function test</string>
     <string name="str_btn_exit">Exit</string>
+    <string name="str_btn_ud">Update data</string>
 
 </resources>

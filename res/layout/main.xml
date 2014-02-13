@@ -5,6 +5,7 @@
     android:orientation="vertical" >
 
     <TextView
+    	android:id="@+id/tv_show1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="@string/hello" />
@@ -22,6 +23,14 @@
         android:layout_height="wrap_content"
         android:onClick="onJNITest"
         android:text="@string/str_btn_jni" />
+    
+    <Button
+        android:id="@+id/test_ud_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onDataJNITest"
+        android:text="@string/str_btn_ud" />
+    
     <Button
         android:id="@+id/exit_btn"
         android:layout_width="fill_parent"
