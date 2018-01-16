@@ -112,7 +112,7 @@ public:
 	void notifyWithByteArray()
 	{
 		LOGI("[%s] enter\n", __FUNCTION__);
-		jobject jobj;
+		jobject jobj = NULL;
 		jbyte toCopy[3] = {1, 2, 3};
 		int length = sizeof(toCopy);
 		jbyteArray array = Ctx_env->NewByteArray(length);
@@ -120,6 +120,9 @@ public:
 
 		jobj = Ctx_env->AllocObject(Ctx_clazz);
 		Ctx_env->CallVoidMethod(jobj, method_nativeCallBackFuncArg2, array);
+
+		// Delete reference to avoid memory leak
+		Ctx_env->DeleteLocalRef(array);
 		LOGI("[%s] exit\n", __FUNCTION__);
 	}
 
@@ -185,7 +188,7 @@ static jstring getJNIString(JNIEnv *env, jobject clazz)
 {
 	jstring str = NULL;
 
-	const char* value = "Doremi JNI Demo Str";
+	const char* value = "This is JNI Demo Str";
 
 	str = env->NewStringUTF(value);	
 	return str;
