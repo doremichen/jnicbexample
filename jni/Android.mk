@@ -25,8 +25,8 @@ LOCAL_SHARED_LIBRARIES := \
 	libutils \
 	libui
 
-LOCAL_MODULE    := libaltekjni
-LOCAL_SRC_FILES := altek-jni.cpp
+LOCAL_MODULE    := libdemojni
+LOCAL_SRC_FILES := demojni.cpp
 
 # Don't prelink this library.  For more efficient code, you may want
 # to add this library to the prelink map and set this to true.
