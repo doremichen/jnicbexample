@@ -65,23 +65,23 @@ public:
 	//JNI env
 	void setJNIEnv(const JNIEnv& env)
 	{
-		atkCtx_env = const_cast<JNIEnv *>(&env);
+		Ctx_env = const_cast<JNIEnv *>(&env);
 	}
 
 	JNIEnv* getJNIEnv() const
 	{
-		return atkCtx_env;
+		return Ctx_env;
 	}
 
 	// java class
 	void setclass(const jclass& clazz)
 	{
-		atkCtx_clazz = clazz;
+		Ctx_clazz = clazz;
 	}
 
 	jclass getclass() const
 	{
-		return atkCtx_clazz;
+		return Ctx_clazz;
 	}
 
 	//Notify app layer from native layer
@@ -90,9 +90,9 @@ public:
 		LOGI("[%s] enter\n", __FUNCTION__);
 	    jobject jobj;
 
-	    jobj = atkCtx_env->AllocObject(atkCtx_clazz);
+	    jobj = Ctx_env->AllocObject(Ctx_clazz);
 
-	    atkCtx_env->CallVoidMethod(jobj, method_nativeCallBackFunc);
+	    Ctx_env->CallVoidMethod(jobj, method_nativeCallBackFunc);
 
 	    LOGI("[%s] exit\n", __FUNCTION__);
 	}
@@ -102,9 +102,9 @@ public:
 		LOGI("[%s] enter\n", __FUNCTION__);
 		jobject jobj;
 
-		jobj = atkCtx_env->AllocObject(atkCtx_clazz);
+		jobj = Ctx_env->AllocObject(Ctx_clazz);
 
-		atkCtx_env->CallVoidMethod(jobj, method_nativeCallBackFuncArg1, num);
+		Ctx_env->CallVoidMethod(jobj, method_nativeCallBackFuncArg1, num);
 
 		LOGI("[%s] exit\n", __FUNCTION__);
 	}
@@ -115,28 +115,28 @@ public:
 		jobject jobj;
 		jbyte toCopy[3] = {1, 2, 3};
 		int length = sizeof(toCopy);
-		jbyteArray array = atkCtx_env->NewByteArray(length);
-		atkCtx_env->SetByteArrayRegion(array, 0, 3, toCopy);
+		jbyteArray array = Ctx_env->NewByteArray(length);
+		Ctx_env->SetByteArrayRegion(array, 0, 3, toCopy);
 
-		jobj = atkCtx_env->AllocObject(atkCtx_clazz);
-		atkCtx_env->CallVoidMethod(jobj, method_nativeCallBackFuncArg2, array);
+		jobj = Ctx_env->AllocObject(Ctx_clazz);
+		Ctx_env->CallVoidMethod(jobj, method_nativeCallBackFuncArg2, array);
 		LOGI("[%s] exit\n", __FUNCTION__);
 	}
 
 	void changeJavaData1()
 	{
 		LOGI("[%s] enter\n", __FUNCTION__);
-		jint data = atkCtx_env->GetStaticIntField(atkCtx_clazz, gFieldIds.mId1);
+		jint data = Ctx_env->GetStaticIntField(Ctx_clazz, gFieldIds.mId1);
 		LOGI("[%s]: data[%d]\n", __FUNCTION__, data);
 		data = data + 122;
-		atkCtx_env->SetStaticIntField(atkCtx_clazz, gFieldIds.mId1, data);
+		Ctx_env->SetStaticIntField(Ctx_clazz, gFieldIds.mId1, data);
 		LOGI("[%s] exit\n", __FUNCTION__);
 	}
 private:
-	JNIContext():atkCtx_env(NULL),atkCtx_clazz(0){};
+	JNIContext():Ctx_env(NULL),Ctx_clazz(0){};
 
-	JNIEnv		*atkCtx_env;
-	jclass		atkCtx_clazz;
+	JNIEnv		*Ctx_env;
+	jclass		Ctx_clazz;
 
 	//Do not need to implement.
 	JNIContext(const JNIContext&);
@@ -200,8 +200,8 @@ static void getJNICallBackfunc(JNIEnv *env, jobject clazz)
 	notify();
 #else
 	context->notify();
-//	context->notify(100);
-//	context->notifyWithByteArray();
+	context->notify(100);
+	context->notifyWithByteArray();
 #endif
     LOGI("[%s] exit\n", __FUNCTION__);
 }
