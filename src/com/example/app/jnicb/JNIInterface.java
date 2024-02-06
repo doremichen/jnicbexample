@@ -1,7 +1,7 @@
 /**
  * Jni interface class
  */
-package com.adam.app.jni.example;
+package com.example.app.jnicb;
 
 class JNIInterface {
     private static NotifyInterface sNotify = null;

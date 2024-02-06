@@ -1,7 +1,7 @@
 /**
  * Main UI activity
  */
-package com.adam.app.jni.example;
+package com.example.app.jnicb;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.altek.app.R;
+import com.example.app.jnicb.R;
 
 public class JNIDemoActivity extends Activity {
     /** Called when the activity is first created. */

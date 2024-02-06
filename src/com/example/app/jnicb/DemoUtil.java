@@ -1,7 +1,7 @@
 /**
  * This is util tool
  */
-package com.adam.app.jni.example;
+package com.example.app.jnicb;
 
 import android.util.Log;
 

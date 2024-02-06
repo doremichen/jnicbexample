@@ -1,0 +1,19 @@
+// jniCbExample Configuration
+android_app {
+    name: "jniCbExample",
+    srcs: [
+        "src/**/*.java",
+    ],
+    platform_apis: true,
+    certificate: "platform",
+    jni_libs: ["libdemojni"],
+    
+    //static_libs: ["androidx.legacy_legacy-support-v4"],
+    
+    //optimize: {
+    //    enabled: false,
+    //},
+}
+
+subdirs = ["jni"]
+

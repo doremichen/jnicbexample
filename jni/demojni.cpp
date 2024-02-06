@@ -26,14 +26,8 @@
 #define LOGE(...)
 #endif
 
-#ifdef __TEST__
-//jni member
-jmethodID gmid;
-JNIEnv *gJNIenv;
-#endif
-
 //Java full name qualifier
-static const char* const kClassName = "com/adam/app/jni/example/JNIInterface";
+static const char* const kClassName = "com/example/app/jnicb/JNIInterface";
 
 //Field Id
 struct FieldIds {
@@ -151,37 +145,6 @@ private:
 
 JNIContext *JNIContext::instance = NULL;
 
-#ifdef __TEST__
-void notify()
-{
-	  LOGI("+++ notify +++");
-	  static const char* const kClassName =
-        "com/altek/app/JNIServer";
-
-    jclass clazz;
-    jobject jobj;
-
-    /* look up the class */
-    clazz = gJNIenv->FindClass(kClassName);
-    if (clazz == NULL) {
-        LOGE("Can't find class %s\n", kClassName);
-        return;
-    }
-
-        gmid = gJNIenv->GetMethodID(clazz, "nativeCallBackFunc", "()V");
-
-        if(!gmid) {
-					LOGI("nativeCallBackFunc: failed to get method ID");
-					return;
-					}
-
-
-        jobj = gJNIenv->AllocObject(clazz);
-
-       gJNIenv->CallVoidMethod(jobj, gmid);
-
-}
-#endif
 
 //Jni function implement
 static jstring getJNIString(JNIEnv *env, jobject clazz)
@@ -199,13 +162,11 @@ static void getJNICallBackfunc(JNIEnv *env, jobject clazz)
 	LOGI("[%s] enter\n", __FUNCTION__);
 //	JNIContext* context =  new JNIContext;
 	JNIContext* context =  JNIContext::getALTEKJNIContext();
-#ifdef __TEST__
-	notify();
-#else
+
 	context->notify();
 	context->notify(100);
 	context->notifyWithByteArray();
-#endif
+
     LOGI("[%s] exit\n", __FUNCTION__);
 }
 
@@ -262,10 +223,6 @@ static int registerMethods(JNIEnv* env) {
         return -1;
     }
     
-#ifdef __TEST__
-    gJNIenv = env;
-#else
-
     //get field id object
     gFieldIds.mId1 = env->GetStaticFieldID(clazz, "sData1FromNative", "I");   //integer data
 
@@ -294,9 +251,6 @@ static int registerMethods(JNIEnv* env) {
     context->setJNIEnv(*env);
     context->setclass(clazz);
 
-
-
-#endif
     /* fill out the rest of the ID cache */
     return 0;
 }
